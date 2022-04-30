@@ -1,30 +1,54 @@
+import {MAX_DESCRIPTION_LENGTH} from '../const.js';
 import {createElement} from '../render.js';
+import {humanizeRuntime, chopString} from '../utils.js';
+import dayjs from 'dayjs';
 
-const filmCardTemplate = () => (
-  `<article class="film-card">
-    <a class="film-card__link">
-      <h3 class="film-card__title">Popeye the Sailor Meets Sindbad the Sailor</h3>
-      <p class="film-card__rating">6.3</p>
-      <p class="film-card__info">
-        <span class="film-card__year">1936</span>
-        <span class="film-card__duration">16m</span>
-        <span class="film-card__genre">Cartoon</span>
-      </p>
-      <img src="./images/posters/popeye-meets-sinbad.png" alt="" class="film-card__poster">
-      <p class="film-card__description">In this short, Sindbad the Sailor (presumably Bluto playing a "role") proclaims himself, in song, to be the greatest sailor, adventurer and…</p>
-      <span class="film-card__comments">0 comments</span>
-    </a>
-    <div class="film-card__controls">
-      <button class="film-card__controls-item film-card__controls-item--add-to-watchlist film-card__controls-item--active" type="button">Add to watchlist</button>
-      <button class="film-card__controls-item film-card__controls-item--mark-as-watched film-card__controls-item--active" type="button">Mark as watched</button>
-      <button class="film-card__controls-item film-card__controls-item--favorite film-card__controls-item--active" type="button">Mark as favorite</button>
-    </div>
-  </article>`
-);
+const filmCardTemplate = (film) => {
+  const { filmInfo, comments, userDetails } = film;
+
+  const { title, totalRating, poster, runtime, genre, description, release } = filmInfo;
+  const duration = humanizeRuntime(runtime) || '';
+  const releaseYear = dayjs(release.date).year();
+  const formatedDescription = chopString(description, MAX_DESCRIPTION_LENGTH, '…');
+
+  const commentsCount = comments.length;
+
+  const isControlActive = (value) => (value) ? ' film-card__controls-item--active' : '';
+  const { watchlist, alreadyWatched, favorite} = userDetails;
+  const watchlistActive = isControlActive(watchlist);
+  const alreadyWatchedActive = isControlActive(alreadyWatched);
+  const favoriteActive = isControlActive(favorite);
+
+  return (
+    `<article class="film-card">
+      <a class="film-card__link">
+        <h3 class="film-card__title">${title}</h3>
+        <p class="film-card__rating">${totalRating}</p>
+        <p class="film-card__info">
+          <span class="film-card__year">${releaseYear}</span>
+          <span class="film-card__duration">${duration}</span>
+          <span class="film-card__genre">${genre[0]}</span>
+        </p>
+        <img src="${poster}" alt="" class="film-card__poster">
+        <p class="film-card__description">${formatedDescription}</p>
+        <span class="film-card__comments">${commentsCount} comments</span>
+      </a>
+      <div class="film-card__controls">
+        <button class="film-card__controls-item film-card__controls-item--add-to-watchlist${watchlistActive}" type="button">Add to watchlist</button>
+        <button class="film-card__controls-item film-card__controls-item--mark-as-watched${alreadyWatchedActive}" type="button">Mark as watched</button>
+        <button class="film-card__controls-item film-card__controls-item--favorite${favoriteActive}" type="button">Mark as favorite</button>
+      </div>
+    </article>`
+  );
+};
 
 export default class FilmCardView {
+  constructor(film) {
+    this.film = film;
+  }
+
   getTemplate() {
-    return filmCardTemplate();
+    return filmCardTemplate(this.film);
   }
 
   getElement() {

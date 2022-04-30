@@ -1,0 +1,5 @@
+const MAX_DESCRIPTION_LENGTH = 140;
+
+export {
+  MAX_DESCRIPTION_LENGTH
+};
