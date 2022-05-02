@@ -25,7 +25,7 @@ render(new StatisticsView(), statisticsFooterElement);
 
 //Временно открытый popup {
 import FilmDetailsView from './view/film-details-view.js';
-const films = [...filmModel.getFilms()];
-const comments = [...commentModel.getComments()];
+const films = [...filmModel.films];
+const comments = [...commentModel.comments];
 render(new FilmDetailsView(films[0], comments), siteMainElement);
 // }

@@ -29,23 +29,25 @@ const filmDetailsCommentTemplate = (comment) => {
 };
 
 export default class FilmDetailsCommentView {
+  #element = null;
+
   constructor(comment){
     this.comment = comment;
   }
 
-  getTemplate() {
+  get template() {
     return filmDetailsCommentTemplate(this.comment);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
