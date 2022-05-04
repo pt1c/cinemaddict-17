@@ -1,7 +1,7 @@
 # Проект «Киноман»
 
 - Студент: [Кирилл Савинов](https://up.htmlacademy.ru/ecmascript/17/user/425671).
-- Наставник: [Сергей Сергеев](https://htmlacademy.ru/profile/id1205257).
+- Наставник: [Артур Галимов](https://htmlacademy.ru/profile/id1237543).
 
 ---
 

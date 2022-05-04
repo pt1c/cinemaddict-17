@@ -14,7 +14,7 @@ import {
 } from './mock-utils.js';
 
 const getNextCommentId = queryIdGenerator();
-const getRandomAuthor = () => getRandomArrayValue(PEOPLE_NAMES);
+const getRandomAuthor = () => getRandomArrayValue(PEOPLE_NAMES) || 'John Doe';
 const getRandomText = () => getRandomArray(DESCRIPTIONS, MIN_DESCRIPTION_SENTENCES, MAX_DESCRIPTION_SENTENCES).join(' ');
 const getRandomEmoction = () => getRandomArrayValue(EMOCTION);
 
