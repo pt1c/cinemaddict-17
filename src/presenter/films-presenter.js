@@ -13,25 +13,28 @@ export default class FilmsPresenter {
   #filmListComponent = new FilmListView();
   #filmContainerComponent = new FilmContainerView();
 
-  #filmDetails = null;
+  #mainContainer = null;
   #commentModel = null;
+  #filmModel = null;
+  #filmDetails = null;
+  #films = null;
 
   init = (mainContainer, filmModel) => {
-    this.mainContainer = mainContainer;
-    this.filmModel = filmModel;
-    this.films = [...this.filmModel.films];
+    this.#mainContainer = mainContainer;
+    this.#filmModel = filmModel;
+    this.#films = [...this.#filmModel.films];
 
     //инициализирует комментарии
     this.#commentModel = new CommentModel();
 
-    render(new SortView(), this.mainContainer);
+    render(new SortView(), this.#mainContainer);
 
-    render(this.#filmBoardComponent, this.mainContainer);
+    render(this.#filmBoardComponent, this.#mainContainer);
     render(this.#filmListComponent, this.#filmBoardComponent.element);
     render(this.#filmContainerComponent, this.#filmListComponent.element);
 
-    for (let i = 0; i < this.films.length; i++) {
-      this.#renderFilm(this.films[i]);
+    for (let i = 0; i < this.#films.length; i++) {
+      this.#renderFilm(this.#films[i]);
     }
 
     render(new ShowMoreButtonView(), this.#filmListComponent.element);
@@ -46,7 +49,7 @@ export default class FilmsPresenter {
       this.#filmDetails.element.querySelector('.film-details__close-btn').removeEventListener('click', closeFilmDetails);
       document.removeEventListener('keydown', onEscKeyDown);
 
-      this.mainContainer.removeChild(this.#filmDetails.element);
+      this.#mainContainer.removeChild(this.#filmDetails.element);
       this.#filmDetails = null;
       document.body.classList.remove('hide-overflow');
     };
@@ -57,7 +60,7 @@ export default class FilmsPresenter {
       }
 
       this.#filmDetails = new FilmDetailsView(film, [...this.#commentModel.comments]);
-      this.mainContainer.appendChild(this.#filmDetails.element);
+      this.#mainContainer.appendChild(this.#filmDetails.element);
 
       this.#filmDetails.element.querySelector('.film-details__close-btn').addEventListener('click', closeFilmDetails);
       document.addEventListener('keydown', onEscKeyDown);
