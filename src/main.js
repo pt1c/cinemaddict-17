@@ -1,7 +1,7 @@
 import UserProfileView from './view/user-profile-view.js';
 import MainMenuView from './view/main-menu-view.js';
 import StatisticsView from './view/statistics-view.js';
-import { render } from './render.js';
+import { render } from './framework/render.js';
 
 import FilmsPresenter from './presenter/films-presenter.js';
 

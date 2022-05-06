@@ -8,7 +8,7 @@ import SortView from '../view/sort-view.js';
 import ShowMoreButtonView from '../view/show-more-button-view';
 import FilmDetailsView from '../view/film-details-view.js';
 import CommentModel from '../model/comment-model.js';
-import { render } from '../render.js';
+import { render } from '../framework/render.js';
 
 export default class FilmsPresenter {
   #filmBoardComponent = new FilmBoardView();
