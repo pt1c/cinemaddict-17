@@ -1,6 +1,6 @@
-import {MAX_DESCRIPTION_LENGTH} from '../const.js';
-import {createElement} from '../render.js';
-import {humanizeRuntime, chopString} from '../utils.js';
+import { MAX_DESCRIPTION_LENGTH } from '../const.js';
+import AbstractView from '../framework/view/abstract-view.js';
+import { humanizeRuntime, chopString } from '../utils.js';
 import dayjs from 'dayjs';
 
 const filmCardTemplate = (film) => {
@@ -14,7 +14,7 @@ const filmCardTemplate = (film) => {
   const commentsCount = comments.length;
 
   const isControlActive = (value) => (value) ? ' film-card__controls-item--active' : '';
-  const { watchlist, alreadyWatched, favorite} = userDetails;
+  const { watchlist, alreadyWatched, favorite } = userDetails;
   const watchlistActive = isControlActive(watchlist);
   const alreadyWatchedActive = isControlActive(alreadyWatched);
   const favoriteActive = isControlActive(favorite);
@@ -42,26 +42,13 @@ const filmCardTemplate = (film) => {
   );
 };
 
-export default class FilmCardView {
-  #element = null;
-
+export default class FilmCardView extends AbstractView {
   constructor(film) {
+    super();
     this.film = film;
   }
 
   get template() {
     return filmCardTemplate(this.film);
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }
