@@ -23,32 +23,40 @@ export default class FilmsPresenter {
   #films = null;
   #renderedFilmsCount = FILMS_PER_PAGE;
 
-  init = (mainContainer, filmModel) => {
+  constructor(mainContainer, filmModel) {
     this.#mainContainer = mainContainer;
     this.#filmModel = filmModel;
-    this.#films = [...this.#filmModel.films];
 
     //инициализирует комментарии
     this.#commentModel = new CommentModel();
+  }
 
+  init = () => {
+    this.#films = [...this.#filmModel.films];
+
+    this.#renderFilmsBoard();
+  };
+
+  #renderFilmsBoard = () => {
     if (this.#films.length === 0) {
       render(this.#filmBoardComponent, this.#mainContainer);
       render(new FilmListEmptyView(), this.#filmBoardComponent.element);
-    } else {
-      render(new SortView(), this.#mainContainer);
+      return;
+    }
 
-      render(this.#filmBoardComponent, this.#mainContainer);
-      render(this.#filmListComponent, this.#filmBoardComponent.element);
-      render(this.#filmContainerComponent, this.#filmListComponent.element);
+    render(new SortView(), this.#mainContainer);
 
-      for (let i = 0; i < Math.min(this.#films.length, FILMS_PER_PAGE); i++) {
-        this.#renderFilm(this.#films[i]);
-      }
+    render(this.#filmBoardComponent, this.#mainContainer);
+    render(this.#filmListComponent, this.#filmBoardComponent.element);
+    render(this.#filmContainerComponent, this.#filmListComponent.element);
 
-      if (this.#films.length > FILMS_PER_PAGE) {
-        render(this.#showMoreButton, this.#filmListComponent.element);
-        this.#showMoreButton.element.addEventListener('click', this.#handleShowMoreButtonClick);
-      }
+    for (let i = 0; i < Math.min(this.#films.length, FILMS_PER_PAGE); i++) {
+      this.#renderFilm(this.#films[i]);
+    }
+
+    if (this.#films.length > FILMS_PER_PAGE) {
+      render(this.#showMoreButton, this.#filmListComponent.element);
+      this.#showMoreButton.element.addEventListener('click', this.#handleShowMoreButtonClick);
     }
   };
 

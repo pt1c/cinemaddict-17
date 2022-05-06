@@ -16,7 +16,7 @@ render(new MainMenuView(), siteMainElement);
 
 const filmModel = new FilmsModel();
 
-const filmsPresenter = new FilmsPresenter();
-filmsPresenter.init(siteMainElement, filmModel);
+const filmsPresenter = new FilmsPresenter(siteMainElement, filmModel);
+filmsPresenter.init();
 
 render(new StatisticsView(), statisticsFooterElement);
