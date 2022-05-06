@@ -1,4 +1,4 @@
-const GENERATE_FILMS = 5;
+const GENERATE_FILMS = 21;
 const GENERATE_COMMENTS = 50;
 
 const MIN_COMMENTS = 0;
@@ -70,7 +70,7 @@ const FILM_GENRES = [
   'Romance'
 ];
 
-const AGE_RATINGS = [6,12,16,18];
+const AGE_RATINGS = [6, 12, 16, 18];
 
 const PEOPLE_NAMES = [
   'Morgan Freeman',
