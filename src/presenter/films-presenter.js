@@ -8,7 +8,7 @@ import SortView from '../view/sort-view.js';
 import ShowMoreButtonView from '../view/show-more-button-view';
 import FilmDetailsView from '../view/film-details-view.js';
 import CommentModel from '../model/comment-model.js';
-import { render } from '../framework/render.js';
+import { render, remove } from '../framework/render.js';
 
 export default class FilmsPresenter {
   #filmBoardComponent = new FilmBoardView();
@@ -68,7 +68,7 @@ export default class FilmsPresenter {
     const closeFilmDetails = () => {
       document.removeEventListener('keydown', onEscKeyDown);
 
-      this.#mainContainer.removeChild(this.#filmDetails.element);
+      remove(this.#filmDetails);
       this.#filmDetails = null;
       document.body.classList.remove('hide-overflow');
     };
@@ -105,8 +105,7 @@ export default class FilmsPresenter {
     this.#renderedFilmsCount += FILMS_PER_PAGE;
 
     if (this.#renderedFilmsCount >= this.#films.length) {
-      this.#showMoreButton.element.remove();
-      this.#showMoreButton.removeElement();
+      remove(this.#showMoreButton);
     }
   };
 
