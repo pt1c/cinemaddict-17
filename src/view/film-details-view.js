@@ -1,6 +1,6 @@
 
-import {createElement} from '../render.js';
-import {humanizeRuntime, humanizeReleaseDate} from '../utils.js';
+import AbstractView from '../framework/view/abstract-view.js';
+import { humanizeRuntime, humanizeReleaseDate } from '../utils.js';
 import FilmDetailsCommentView from './film-details-comment-view.js';
 
 const filmDetailsTemplate = (film, comments) => {
@@ -17,7 +17,7 @@ const filmDetailsTemplate = (film, comments) => {
   const genresBody = genre.map((element) => (`<span class="film-details__genre">${element}</span>`)).join('\n');
 
   const isControlActive = (value) => (value) ? ' film-details__control-button--active' : '';
-  const { watchlist, alreadyWatched, favorite} = userDetails;
+  const { watchlist, alreadyWatched, favorite } = userDetails;
   const watchlistActive = isControlActive(watchlist);
   const alreadyWatchedActive = isControlActive(alreadyWatched);
   const favoriteActive = isControlActive(favorite);
@@ -143,10 +143,9 @@ const filmDetailsTemplate = (film, comments) => {
   );
 };
 
-export default class FilmDetailsView {
-  #element = null;
-
+export default class FilmDetailsView extends AbstractView {
   constructor(film, comments) {
+    super();
     this.film = film;
     this.comments = comments;
   }
@@ -155,15 +154,13 @@ export default class FilmDetailsView {
     return filmDetailsTemplate(this.film, this.comments);
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
+  setCloseClickHandler = (callback) => {
+    this._callback.closeClick = callback;
+    this.element.querySelector('.film-details__close-btn').addEventListener('click', this.#closeClickHandler);
+  };
 
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
-  }
+  #closeClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.closeClick();
+  };
 }

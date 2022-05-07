@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime);
 
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 const filmDetailsCommentTemplate = (comment) => {
   const { author, emotion, date } = comment;
@@ -28,26 +28,13 @@ const filmDetailsCommentTemplate = (comment) => {
   );
 };
 
-export default class FilmDetailsCommentView {
-  #element = null;
-
-  constructor(comment){
+export default class FilmDetailsCommentView extends AbstractView {
+  constructor(comment) {
+    super();
     this.comment = comment;
   }
 
   get template() {
     return filmDetailsCommentTemplate(this.comment);
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }
