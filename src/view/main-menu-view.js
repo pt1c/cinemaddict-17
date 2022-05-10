@@ -1,16 +1,36 @@
+import { FILTER_TYPES, FILTER_NAMES } from '../const.js';
 import AbstractView from '../framework/view/abstract-view.js';
 
-const mainMenuTemplate = () => (
-  `<nav class="main-navigation">
-    <a href="#all" class="main-navigation__item main-navigation__item--active">All movies</a>
-    <a href="#watchlist" class="main-navigation__item">Watchlist <span class="main-navigation__item-count">13</span></a>
-    <a href="#history" class="main-navigation__item">History <span class="main-navigation__item-count">4</span></a>
-    <a href="#favorites" class="main-navigation__item">Favorites <span class="main-navigation__item-count">8</span></a>
-  </nav>`
-);
-
 export default class MainMenuView extends AbstractView {
-  get template() {
-    return mainMenuTemplate();
+  #filters = null;
+  #active = null;
+
+  constructor(filters, active) {
+    super();
+    this.#filters = filters;
+    this.#active = active;
   }
+
+  get template() {
+    const filterItemsTemplate = Object.entries(this.#filters)
+      .map(([name, func]) => this.#generateFilterTemplate(
+        {
+          name: name,
+          title: FILTER_NAMES[name],
+          count: (name !== FILTER_TYPES.ALL) ? func().length : ''
+        }, this.#active))
+      .join('');
+
+    return (
+      `<nav class="main-navigation">
+        ${filterItemsTemplate}
+      </nav>`
+    );
+  }
+
+  #generateFilterTemplate = (filter, active) => {
+    const activeClass = (active === filter.name) ? ' main-navigation__item--active' : '';
+    const filmCount = (filter.count) ? ` <span class="main-navigation__item-count">${filter.count}</span>` : '';
+    return `<a href="#${filter.name}" class="main-navigation__item${activeClass}">${filter.title}${filmCount}</a>`;
+  };
 }
