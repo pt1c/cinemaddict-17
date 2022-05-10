@@ -19,4 +19,4 @@ const filmModel = new FilmsModel();
 const filmsPresenter = new FilmsPresenter(siteMainElement, filmModel);
 filmsPresenter.init();
 
-render(new StatisticsView(), statisticsFooterElement);
+render(new StatisticsView(filmModel.count), statisticsFooterElement);
