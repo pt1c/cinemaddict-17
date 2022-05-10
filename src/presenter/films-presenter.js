@@ -38,7 +38,7 @@ export default class FilmsPresenter {
   };
 
   #renderFilmsBoard = () => {
-    if (this.#films.length === 0) {
+    if (this.#filmModel.count === 0) {
       render(this.#filmBoardComponent, this.#mainContainer);
       render(new FilmListEmptyView(), this.#filmBoardComponent.element);
       return;
@@ -50,11 +50,11 @@ export default class FilmsPresenter {
     render(this.#filmListComponent, this.#filmBoardComponent.element);
     render(this.#filmContainerComponent, this.#filmListComponent.element);
 
-    for (let i = 0; i < Math.min(this.#films.length, FILMS_PER_PAGE); i++) {
+    for (let i = 0; i < Math.min(this.#filmModel.count, FILMS_PER_PAGE); i++) {
       this.#renderFilm(this.#films[i]);
     }
 
-    if (this.#films.length > FILMS_PER_PAGE) {
+    if (this.#filmModel.count > FILMS_PER_PAGE) {
       render(this.#showMoreButton, this.#filmListComponent.element);
       this.#showMoreButton.setClickHandler(this.#handleShowMoreButtonClick);
     }
@@ -104,7 +104,7 @@ export default class FilmsPresenter {
 
     this.#renderedFilmsCount += FILMS_PER_PAGE;
 
-    if (this.#renderedFilmsCount >= this.#films.length) {
+    if (this.#renderedFilmsCount >= this.#filmModel.count) {
       remove(this.#showMoreButton);
     }
   };
