@@ -15,9 +15,16 @@ const FILTER_NAMES = {
   [FILTER_TYPES.FAVORITES]: 'Favorites',
 };
 
+const SORT_TYPES = {
+  DEFAULT: 'default',
+  DATE: 'date',
+  RATING: 'rating'
+};
+
 export {
   MAX_DESCRIPTION_LENGTH,
   FILMS_PER_PAGE,
   FILTER_TYPES,
-  FILTER_NAMES
+  FILTER_NAMES,
+  SORT_TYPES
 };
