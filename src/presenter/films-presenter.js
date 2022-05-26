@@ -8,6 +8,7 @@ import ShowMoreButtonView from '../view/show-more-button-view';
 import CommentModel from '../model/comment-model.js';
 import { render, remove } from '../framework/render.js';
 import FilmPresenter from './film-presenter.js';
+import { updateItem } from '../utils/common.js';
 
 export default class FilmsPresenter {
   #filmBoardComponent = new FilmBoardView();
@@ -18,9 +19,10 @@ export default class FilmsPresenter {
   #mainContainer = null;
   #commentModel = null;
   #filmModel = null;
-  #filmDetails = null;
   #films = null;
+  #originalFilms = null;
   #renderedFilmsCount = FILMS_PER_PAGE;
+  #filmPresenter = new Map();
 
   constructor(mainContainer, filmModel) {
     this.#mainContainer = mainContainer;
@@ -32,6 +34,7 @@ export default class FilmsPresenter {
 
   init = () => {
     this.#films = [...this.#filmModel.films];
+    this.#originalFilms = [...this.#filmModel.films];
 
     this.#renderFilmsBoard();
   };
@@ -60,13 +63,18 @@ export default class FilmsPresenter {
   };
 
   #renderFilm = (film) => {
-    const filmPresenter = new FilmPresenter(this.#filmContainerComponent.element, this.#handleFilmChange);
+    const filmPresenter = new FilmPresenter(this.#filmContainerComponent.element, this.#handleFilmChange, this.#handleModeChange);
     filmPresenter.init(film, [...this.#commentModel.comments]);
+    this.#filmPresenter.set(film.id, filmPresenter);
   };
 
   #handleFilmChange = (updatedFilm) => {
-    //this.#sectionMovie = updateItem(this.#sectionMovie, updatedTask);
-    //this.#filmPresenter.get(updatedTask.id).init(updatedTask);
+    this.#films = updateItem(this.#films, updatedFilm);
+    this.#filmPresenter.get(updatedFilm.id).init(updatedFilm, [...this.#commentModel.comments]);
+  };
+
+  #handleModeChange = () => {
+    this.#filmPresenter.forEach((presenter) => presenter.resetFilmDetails());
   };
 
   #handleShowMoreButtonClick = () => {

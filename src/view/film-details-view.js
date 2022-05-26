@@ -25,7 +25,7 @@ const filmDetailsTemplate = (film, comments) => {
   const commentsCount = film.comments.length;
   let commentsItems = '';
   film.comments.forEach((id) => {
-    commentsItems += new FilmDetailsCommentView(comments[id]).template;
+    commentsItems += new FilmDetailsCommentView(comments.find((item) => item.id === id)).template;
   });
 
   return (
@@ -162,5 +162,35 @@ export default class FilmDetailsView extends AbstractView {
   #closeClickHandler = (evt) => {
     evt.preventDefault();
     this._callback.closeClick();
+  };
+
+  setWatchlistClickHandler = (callback) => {
+    this._callback.toWatchListClick = callback;
+    this.element.querySelector('.film-details__control-button--watchlist').addEventListener('click', this.#watchListClickHandler);
+  };
+
+  #watchListClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.toWatchListClick();
+  };
+
+  setAlreadyWatchedClickHandler = (callback) => {
+    this._callback.alreadyWatchedClick = callback;
+    this.element.querySelector('.film-details__control-button--watched').addEventListener('click', this.#alreadyWatchedClickHandler);
+  };
+
+  #alreadyWatchedClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.alreadyWatchedClick();
+  };
+
+  setFavoriteClickHandler = (callback) => {
+    this._callback.favoriteClick = callback;
+    this.element.querySelector('.film-details__control-button--favorite').addEventListener('click', this.#favoriteClickHandler);
+  };
+
+  #favoriteClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.favoriteClick();
   };
 }
