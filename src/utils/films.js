@@ -9,6 +9,6 @@ const sortFilmsByRating = (filmA, filmB) => (filmB.filmInfo.totalRating - filmA.
 const sortFilmsByDate = (filmA, filmB) => (dayjs(filmB.filmInfo.release.date).diff(dayjs(filmA.filmInfo.release.date)));
 
 export {
-    sortFilmsByRating,
-    sortFilmsByDate
+  sortFilmsByRating,
+  sortFilmsByDate
 };
