@@ -112,4 +112,8 @@ export default class FilmPresenter {
     this.#changeDataCallback({ ...this.#film, userDetails: { ...this.#film.userDetails, favorite: !this.#film.userDetails.favorite } });
   };
 
+  destroy = () => {
+    remove(this.#filmCardComponent);
+    remove(this.#filmDetailsComponent);
+  };
 }
