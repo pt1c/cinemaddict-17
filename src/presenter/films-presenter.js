@@ -72,15 +72,15 @@ export default class FilmsPresenter {
   };
 
   #renderFilm = (film) => {
-    const filmPresenter = new FilmPresenter(this.#filmContainerComponent.element, this.#handleFilmChange, this.#handleModeChange);
-    filmPresenter.init(film, [...this.#commentModel.comments]);
+    const filmPresenter = new FilmPresenter(this.#filmContainerComponent.element, this.#handleFilmChange, this.#handleModeChange, this.#commentModel);
+    filmPresenter.init(film);
     this.#filmPresenter.set(film.id, filmPresenter);
   };
 
   #handleFilmChange = (updatedFilm) => {
     this.#films = updateItem(this.#films, updatedFilm);
     this.#originalFilms = updateItem(this.#originalFilms, updatedFilm);
-    this.#filmPresenter.get(updatedFilm.id).init(updatedFilm, [...this.#commentModel.comments]);
+    this.#filmPresenter.get(updatedFilm.id).init(updatedFilm);
   };
 
   #handleModeChange = () => {
