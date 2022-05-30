@@ -14,28 +14,29 @@ export default class FilmPresenter {
   #filmDetailsComponent = null;
 
   #film = null;
-  #filmComments = null;
 
   #mode = Mode.CLOSED;
 
   #changeDataCallback = null;
   #changeModeCallback = null;
 
-  constructor(filmContainerElement, changeDataCallback, changeModeCallback) {
+  #commentModel = null;
+
+  constructor(filmContainerElement, changeDataCallback, changeModeCallback, commentModel) {
     this.#filmContainerElement = filmContainerElement;
     this.#changeDataCallback = changeDataCallback;
     this.#changeModeCallback = changeModeCallback;
+    this.#commentModel = commentModel;
   }
 
-  init = (film, comments) => {
-    this.#film = film;
-    this.#filmComments = comments;
+  init = (film) => {
+    this.#film = { ...film, comments: [...this.#commentModel.getCommentsByIds(film.comments)] };
 
     const prevFilmCardComponent = this.#filmCardComponent;
     const prevFilmDetailsComponent = this.#filmDetailsComponent;
 
     this.#filmCardComponent = new FilmCardView(this.#film);
-    this.#filmDetailsComponent = new FilmDetailsView(this.#film, this.#filmComments);
+    this.#filmDetailsComponent = new FilmDetailsView(this.#film);
 
     this.#filmCardComponent.setClickHandler(this.#openFilmDetails);
     this.#filmCardComponent.setWatchlistClickHandler(this.#onWatchListClick);
@@ -80,6 +81,7 @@ export default class FilmPresenter {
 
   #closeFilmDetails = () => {
     remove(this.#filmDetailsComponent);
+    this.#filmDetailsComponent.reset();
 
     this.#mode = Mode.CLOSED;
 
