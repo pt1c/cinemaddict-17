@@ -1,4 +1,4 @@
-const GENERATE_FILMS = 21;
+const GENERATE_FILMS = 22;
 const GENERATE_COMMENTS = 50;
 
 const MIN_COMMENTS = 0;
