@@ -22,9 +22,10 @@ const filterModel = new FilterModel();
 render(new UserProfileView(), siteHeaderElement);
 
 const mainMenuPresenter = new FilterPresenter(siteMainElement, filterModel, filmModel);
-mainMenuPresenter.init();
-
 const filmsPresenter = new FilmsPresenter(siteMainElement, filmModel, filterModel);
+
+mainMenuPresenter.init();
 filmsPresenter.init();
+filmModel.init();
 
 render(new StatisticsView(filmModel.count), statisticsFooterElement);
