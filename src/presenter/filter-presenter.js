@@ -3,7 +3,7 @@ import { render, remove, replace } from '../framework/render.js';
 import { filter } from '../utils/filters.js';
 import { FILTER_TYPES, FILTER_NAMES, UPDATE_TYPE } from '../const.js';
 
-export default class filterPresenter {
+export default class FilterPresenter {
   #filterContainer = null;
   #filterModel = null;
   #filmModel = null;
