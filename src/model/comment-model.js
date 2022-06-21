@@ -1,7 +1,8 @@
 import { GENERATE_COMMENTS } from '../mock/mock-const.js';
 import { generateComment } from '../mock/comment.js';
+import Observable from '../framework/observable.js';
 
-export default class FilmModel {
+export default class FilmModel extends Observable {
   #comments = Array.from({ length: GENERATE_COMMENTS }, generateComment);
 
   get comments() {

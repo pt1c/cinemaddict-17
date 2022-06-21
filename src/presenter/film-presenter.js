@@ -1,6 +1,7 @@
 import { render, replace, remove } from '../framework/render.js';
 import FilmCardView from '../view/film-card-view.js';
 import FilmDetailsView from '../view/film-details-view.js';
+import { USER_ACTION, UPDATE_TYPE } from '../const.js';
 
 const Mode = {
   CLOSED: 'CLOSED',
@@ -61,6 +62,14 @@ export default class FilmPresenter {
     remove(prevFilmDetailsComponent);
   };
 
+  get isDetailsOpen() {
+    return this.#mode === Mode.OPENED;
+  }
+
+  get filmId() {
+    return this.#film.id;
+  }
+
   #initDetailsHandlers = () => {
     this.#filmDetailsComponent.setCloseClickHandler(this.#closeFilmDetails);
     this.#filmDetailsComponent.setWatchlistClickHandler(this.#onWatchListClick);
@@ -103,19 +112,31 @@ export default class FilmPresenter {
   };
 
   #onWatchListClick = () => {
-    this.#changeDataCallback({ ...this.#film, userDetails: { ...this.#film.userDetails, watchlist: !this.#film.userDetails.watchlist } });
+    this.#changeDataCallback(
+      USER_ACTION.FILM_UPDATE,
+      UPDATE_TYPE.MINOR,
+      { ...this.#film, userDetails: { ...this.#film.userDetails, watchlist: !this.#film.userDetails.watchlist } });
   };
 
   #onAlreadyWatchedClick = () => {
-    this.#changeDataCallback({ ...this.#film, userDetails: { ...this.#film.userDetails, alreadyWatched: !this.#film.userDetails.alreadyWatched } });
+    this.#changeDataCallback(
+      USER_ACTION.FILM_UPDATE,
+      UPDATE_TYPE.MINOR,
+      { ...this.#film, userDetails: { ...this.#film.userDetails, alreadyWatched: !this.#film.userDetails.alreadyWatched } });
   };
 
   #onFavoriteClick = () => {
-    this.#changeDataCallback({ ...this.#film, userDetails: { ...this.#film.userDetails, favorite: !this.#film.userDetails.favorite } });
+    this.#changeDataCallback(
+      USER_ACTION.FILM_UPDATE,
+      UPDATE_TYPE.MINOR,
+      { ...this.#film, userDetails: { ...this.#film.userDetails, favorite: !this.#film.userDetails.favorite } });
   };
 
-  destroy = () => {
+  destroy = (cardOnly = false) => {
     remove(this.#filmCardComponent);
-    remove(this.#filmDetailsComponent);
+
+    if (!cardOnly) {
+      remove(this.#filmDetailsComponent);
+    }
   };
 }
