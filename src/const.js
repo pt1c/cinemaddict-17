@@ -1,6 +1,9 @@
 const MAX_DESCRIPTION_LENGTH = 140;
 const FILMS_PER_PAGE = 5;
 
+const AUTHORIZATION = 'Basic ffDSsnndFe37fs32';
+const END_POINT = 'https://17.ecmascript.pages.academy/cinemaddict';
+
 const FILTER_TYPES = {
   ALL: 'all',
   WATCHLIST: 'watchlist',
@@ -40,5 +43,7 @@ export {
   FILTER_NAMES,
   SORT_TYPES,
   USER_ACTION,
-  UPDATE_TYPE
+  UPDATE_TYPE,
+  AUTHORIZATION,
+  END_POINT
 };
