@@ -1,6 +1,6 @@
 
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import { humanizeRuntime, humanizeReleaseDate } from '../utils.js';
+import { humanizeRuntime, humanizeReleaseDate } from '../utils/common.js';
 import FilmDetailsCommentView from './film-details-comment-view.js';
 
 const filmDetailsTemplate = (film) => {

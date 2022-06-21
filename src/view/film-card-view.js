@@ -1,6 +1,6 @@
 import { MAX_DESCRIPTION_LENGTH } from '../const.js';
 import AbstractView from '../framework/view/abstract-view.js';
-import { humanizeRuntime, chopString } from '../utils.js';
+import { humanizeRuntime, chopString } from '../utils/common.js';
 import dayjs from 'dayjs';
 
 const filmCardTemplate = (film) => {

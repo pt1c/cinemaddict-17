@@ -1,15 +1,15 @@
-const updateItem = (items, update) => {
-  const index = items.findIndex((item) => item.id === update.id);
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+dayjs.extend(duration);
 
-  if (index === -1) {
-    return items;
-  }
+const humanizeRuntime = (runtime) => dayjs.duration(runtime, 'minutes').format('H[h] m[m]').replace(/\b0h\b/, '');
+const humanizeReleaseDate = (date) => dayjs(date).format('D MMMM YYYY');
+const checkMaxStringLength = (inputString, maxLength) => inputString.length <= maxLength;
+const chopString = (inputString, maxLength, etcSymbol) => (checkMaxStringLength(inputString, maxLength)) ? inputString : (inputString.substr(0, maxLength - 1) + etcSymbol);
 
-  return [
-    ...items.slice(0, index),
-    update,
-    ...items.slice(index + 1),
-  ];
+export {
+  humanizeRuntime,
+  humanizeReleaseDate,
+  checkMaxStringLength,
+  chopString
 };
-
-export { updateItem };
