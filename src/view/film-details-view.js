@@ -216,6 +216,51 @@ export default class FilmDetailsView extends AbstractStatefulView {
     }
   };
 
+  setAddCommentHandler = (callback) => {
+    this._callback.addComment = callback;
+    document.addEventListener('keydown', this.#onAddComment);
+  };
+
+  #onAddComment = (evt) => {
+    const scrollPosition = this.element.scrollTop;
+    if (evt.ctrlKey && evt.key === 'Enter') {
+      evt.preventDefault();
+      this._callback.addComment(FilmDetailsView.parseStateToFilm(this._state), FilmDetailsView.newComment(this._state));
+    }
+    this.element.scrollTop = scrollPosition;
+  };
+
+  setDeleteCommentHandler = (callback) => {
+    this._callback.deleteComment = callback;
+
+    const deleteButtons = this.element.querySelectorAll('.film-details__comment-delete');
+    deleteButtons.forEach((button) => {
+      button.addEventListener('click', this.#onCommentDelete);
+    });
+  };
+
+  #onCommentDelete = (evt) => {
+    evt.preventDefault();
+    const scrollPosition = this.element.scrollTop;
+    const isDeleteButton = evt.target.dataset.buttonId;
+
+    let commentId = null;
+
+    const index = this._state.comments.findIndex((item) => item.id === isDeleteButton);
+
+    if (index !== -1) {
+      commentId = this._state.comments[index].id;
+    }
+
+    this._callback.deleteComment(commentId);
+
+    this.updateElement({
+      ...this._state
+    });
+
+    this.element.scrollTop = scrollPosition;
+  };
+
   #setInnerHandlers = () => {
     this.element.querySelector('.film-details__emoji-list').addEventListener('click', this.#smileChangeHandler);
     this.element.querySelector('.film-details__comment-input').addEventListener('input', this.#commentInputHandler);
@@ -227,6 +272,8 @@ export default class FilmDetailsView extends AbstractStatefulView {
     this.setWatchlistClickHandler(this._callback.toWatchListClick);
     this.setAlreadyWatchedClickHandler(this._callback.alreadyWatchedClick);
     this.setFavoriteClickHandler(this._callback.favoriteClick);
+    this.setDeleteCommentHandler(this._callback.deleteComment);
+    this.setAddCommentHandler(this._callback.addComment);
   };
 
   reset = (film) => {
@@ -235,18 +282,33 @@ export default class FilmDetailsView extends AbstractStatefulView {
     );
   };
 
-  static parseFilmToState = (film) => ({ ...film, smileName: null, newComment: null });
+
+  static parseFilmToState = (film) => (
+    {
+      ...film,
+      smileName: null,
+      newComment: null,
+      isDisabled: false,
+      isDeleting: false,
+      isSaving: false,
+    }
+  );
+
   static parseStateToFilm = (state) => {
     const film = { ...state };
 
-    if (!film.film.newComment) {
-      // добавит новый комментарий с смайлом в массив
-    }
-
     delete film.smileName;
     delete film.newComment;
+    delete film.isDeleting;
+    delete film.isDisabled;
+    delete film.isSaving;
 
     return film;
   };
+
+  static newComment = (state) => ({
+    emotion: state.smileName,
+    comment: state.newComment,
+  });
 
 }

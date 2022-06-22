@@ -37,6 +37,16 @@ const UPDATE_TYPE = {
   MAJOR: 'MAJOR',
 };
 
+const METHOD = {
+  GET: 'GET',
+  PUT: 'PUT',
+};
+
+const TIME_LIMIT = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
+};
+
 export {
   MAX_DESCRIPTION_LENGTH,
   FILMS_PER_PAGE,
@@ -46,5 +56,7 @@ export {
   USER_ACTION,
   UPDATE_TYPE,
   AUTHORIZATION,
-  END_POINT
+  END_POINT,
+  METHOD,
+  TIME_LIMIT
 };

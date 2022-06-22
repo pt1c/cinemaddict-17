@@ -6,7 +6,6 @@ import FilmContainerView from '../view/film-container-view.js';
 import SortView from '../view/sort-view.js';
 import ShowMoreButtonView from '../view/show-more-button-view';
 import LoadingView from '../view/loading-view.js';
-import CommentModel from '../model/comment-model.js';
 import { render, remove } from '../framework/render.js';
 import FilmPresenter from './film-presenter.js';
 import { sortFilmsByRating, sortFilmsByDate } from '../utils/films.js';
@@ -23,7 +22,6 @@ export default class FilmsPresenter {
   #loadingComponent = new LoadingView();
 
   #mainContainer = null;
-  #commentModel = null;
   #filmModel = null;
   #filterModel = null;
   #renderedFilmsCount = FILMS_PER_PAGE;
@@ -39,9 +37,6 @@ export default class FilmsPresenter {
     this.#mainContainer = mainContainer;
     this.#filmModel = filmModel;
     this.#filterModel = filterModel;
-
-    //инициализирует комментарии
-    this.#commentModel = new CommentModel();
 
     this.#filmModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -102,7 +97,7 @@ export default class FilmsPresenter {
   };
 
   #renderFilm = (film) => {
-    const filmPresenter = new FilmPresenter(this.#filmContainerComponent.element, this.#handleViewAction, this.#handleModeChange, this.#commentModel);
+    const filmPresenter = new FilmPresenter(this.#filmContainerComponent.element, this.#handleViewAction, this.#handleModeChange);
     filmPresenter.init(film);
     this.#filmPresenter.set(film.id, filmPresenter);
   };
@@ -182,10 +177,10 @@ export default class FilmsPresenter {
         this.#filmModel.updateFilm(updateType, update);
         break;
       case USER_ACTION.COMMENT_ADD:
-        this.#commentModel.addComment(updateType, update);
+        this.#filmModel.addComment(updateType, update);
         break;
       case USER_ACTION.COMMENT_DELETE:
-        this.#commentModel.deleteComment(updateType, update);
+        this.#filmModel.deleteComment(updateType, update);
         break;
     }
   };
