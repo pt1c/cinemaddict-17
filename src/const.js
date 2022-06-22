@@ -1,6 +1,9 @@
 const MAX_DESCRIPTION_LENGTH = 140;
 const FILMS_PER_PAGE = 5;
 
+const AUTHORIZATION = 'Basic ffDSsnndFe37fs32';
+const END_POINT = 'https://17.ecmascript.pages.academy/cinemaddict';
+
 const FILTER_TYPES = {
   ALL: 'all',
   WATCHLIST: 'watchlist',
@@ -25,12 +28,25 @@ const USER_ACTION = {
   FILM_UPDATE: 'FILM_UPDATE',
   COMMENT_ADD: 'COMMENT_ADD',
   COMMENT_DELETE: 'COMMENT_DELETE',
+  INIT: 'INIT',
 };
 
 const UPDATE_TYPE = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
+};
+
+const METHOD = {
+  GET: 'GET',
+  PUT: 'PUT',
+  POST: 'POST',
+  DELETE: 'DELETE',
+};
+
+const TIME_LIMIT = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
 };
 
 export {
@@ -40,5 +56,9 @@ export {
   FILTER_NAMES,
   SORT_TYPES,
   USER_ACTION,
-  UPDATE_TYPE
+  UPDATE_TYPE,
+  AUTHORIZATION,
+  END_POINT,
+  METHOD,
+  TIME_LIMIT
 };

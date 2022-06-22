@@ -4,14 +4,14 @@ import { humanizeRuntime, chopString } from '../utils/common.js';
 import dayjs from 'dayjs';
 
 const filmCardTemplate = (film) => {
-  const { filmInfo, comments, userDetails } = film;
+  const { filmInfo, commentsIds, userDetails } = film;
 
   const { title, totalRating, poster, runtime, genre, description, release } = filmInfo;
   const duration = humanizeRuntime(runtime) || '';
   const releaseYear = dayjs(release.date).year();
   const formatedDescription = chopString(description, MAX_DESCRIPTION_LENGTH, '…');
 
-  const commentsCount = comments.length;
+  const commentsCount = commentsIds.length;
 
   const isControlActive = (value) => (value) ? ' film-card__controls-item--active' : '';
   const { watchlist, alreadyWatched, favorite } = userDetails;
