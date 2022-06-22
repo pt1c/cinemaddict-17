@@ -26,6 +26,6 @@ const filmsPresenter = new FilmsPresenter(siteMainElement, filmModel, filterMode
 
 mainMenuPresenter.init();
 filmsPresenter.init();
-filmModel.init();
-
-render(new StatisticsView(filmModel.count), statisticsFooterElement);
+filmModel.init().finally(() => {
+  render(new StatisticsView(filmModel.count), statisticsFooterElement);
+});
