@@ -40,6 +40,8 @@ const UPDATE_TYPE = {
 const METHOD = {
   GET: 'GET',
   PUT: 'PUT',
+  POST: 'POST',
+  DELETE: 'DELETE',
 };
 
 const TIME_LIMIT = {

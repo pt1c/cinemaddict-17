@@ -1,4 +1,4 @@
-import { UPDATE_TYPE } from '../const.js';
+import { UPDATE_TYPE, USER_ACTION } from '../const.js';
 import Observable from '../framework/observable.js';
 
 export default class CommentModel extends Observable {
@@ -27,27 +27,36 @@ export default class CommentModel extends Observable {
     this._notify(UPDATE_TYPE.INIT);
   };
 
-  addComment = (updateType, update) => {
-    this.#comments = [
-      update,
-      ...this.#comments,
-    ];
+  addComment = async (newComment, movieId) => {
+    try {
+      const response = await this.#commentsApiService.addComment(newComment, movieId);
+      this.#comments = response.comments;
 
-    this._notify(updateType, update);
+      this._notify(USER_ACTION.COMMENT_ADD);
+    } catch (err) {
+      throw new Error('Can\'t add comment');
+    }
   };
 
-  deleteComment = (updateType, update) => {
-    const index = this.#comments.findIndex((comment) => comment.id === update.id);
+  deleteComment = async (id) => {
+    const index = this.#comments.findIndex((comment) => comment.id === id);
 
     if (index === -1) {
-      throw new Error('Cannot delete unexisting comment');
+      throw new Error('Can\'t delete unexisting comment');
     }
 
-    this.#comments = [
-      ...this.#comments.slice(0, index),
-      ...this.#comments.slice(index + 1),
-    ];
+    try {
+      await this.#commentsApiService.deleteComment(id);
 
-    this._notify(updateType);
+      this.#comments = [
+        ...this.#comments.slice(0, index),
+        ...this.#comments.slice(index + 1),
+      ];
+
+      this._notify(USER_ACTION.COMMENT_DELETE);
+    } catch (err) {
+      throw new Error('Can\'t delete comment');
+    }
   };
+
 }

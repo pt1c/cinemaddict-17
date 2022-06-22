@@ -211,14 +211,14 @@ export default class FilmPresenter {
     switch (updateType) {
       case USER_ACTION.COMMENT_ADD:
         this.#changeDataCallback(
-          USER_ACTION.ADD_COMMENT,
+          USER_ACTION.COMMENT_ADD,
           UPDATE_TYPE.MINOR,
           this.#film
         );
         break;
       case USER_ACTION.COMMENT_DELETE:
         this.#changeDataCallback(
-          USER_ACTION.DELETE_COMMENT,
+          USER_ACTION.COMMENT_DELETE,
           UPDATE_TYPE.MINOR,
           this.#film
         );
