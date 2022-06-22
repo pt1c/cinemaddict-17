@@ -32,12 +32,13 @@ const filmDetailsCommentTemplate = (comment, deletingCommentId) => {
 };
 
 export default class FilmDetailsCommentView extends AbstractView {
-  constructor(comment) {
+  constructor(comment, deletingCommentId) {
     super();
     this.comment = comment;
+    this.deletingCommentId = deletingCommentId;
   }
 
   get template() {
-    return filmDetailsCommentTemplate(this.comment);
+    return filmDetailsCommentTemplate(this.comment, this.deletingCommentId);
   }
 }

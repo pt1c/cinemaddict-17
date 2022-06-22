@@ -27,9 +27,9 @@ export default class CommentModel extends Observable {
     this._notify(UPDATE_TYPE.INIT);
   };
 
-  addComment = async (newComment, movieId) => {
+  addComment = async (newComment, filmId) => {
     try {
-      const response = await this.#commentsApiService.addComment(newComment, movieId);
+      const response = await this.#commentsApiService.addComment(newComment, filmId);
       this.#comments = response.comments;
 
       this._notify(USER_ACTION.COMMENT_ADD);

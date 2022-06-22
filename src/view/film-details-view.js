@@ -25,7 +25,7 @@ const filmDetailsTemplate = (film) => {
   const commentsCount = film.comments.length;
   let commentsItems = '';
   film.comments.forEach((comment) => {
-    commentsItems += new FilmDetailsCommentView(comment).template;
+    commentsItems += new FilmDetailsCommentView(comment, film?.deletingCommentId).template;
   });
 
   const smileShow = () => (film.smileName) ? `<img src="./images/emoji/${film.smileName}.png" width="55" height="55" alt="emoji-${film.smileName}">` : '';
@@ -307,7 +307,7 @@ export default class FilmDetailsView extends AbstractStatefulView {
   };
 
   static newComment = (state) => ({
-    emotion: state.smileName,
+    emotion: state.smileName || 'smile',
     comment: state.newComment,
   });
 

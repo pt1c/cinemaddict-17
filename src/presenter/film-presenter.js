@@ -146,11 +146,11 @@ export default class FilmPresenter {
       { ...this.#film, userDetails: { ...this.#film.userDetails, favorite: !this.#film.userDetails.favorite } });
   };
 
-  #handleAddComment = async (movie, newComment) => {
+  #handleAddComment = async (film, newComment) => {
     this.#uiBlocker.block();
     this.setSaving();
     try {
-      await this.#commentModel.addComment(newComment, movie.id);
+      await this.#commentModel.addComment(newComment, film.id);
     } catch (err) {
       this.setAborting();
       this.setAbortingAddComment();
