@@ -218,10 +218,10 @@ export default class FilmDetailsView extends AbstractStatefulView {
 
   setAddCommentHandler = (callback) => {
     this._callback.addComment = callback;
-    document.addEventListener('keydown', this.#onAddComment);
+    document.addEventListener('keydown', this.#addCommentHandler);
   };
 
-  #onAddComment = (evt) => {
+  #addCommentHandler = (evt) => {
     const scrollPosition = this.element.scrollTop;
     if (evt.ctrlKey && evt.key === 'Enter') {
       evt.preventDefault();
@@ -235,11 +235,11 @@ export default class FilmDetailsView extends AbstractStatefulView {
 
     const deleteButtons = this.element.querySelectorAll('.film-details__comment-delete');
     deleteButtons.forEach((button) => {
-      button.addEventListener('click', this.#onCommentDelete);
+      button.addEventListener('click', this.#deleteCommentHandler);
     });
   };
 
-  #onCommentDelete = (evt) => {
+  #deleteCommentHandler = (evt) => {
     evt.preventDefault();
     const scrollPosition = this.element.scrollTop;
     const isDeleteButton = evt.target.dataset.buttonId;

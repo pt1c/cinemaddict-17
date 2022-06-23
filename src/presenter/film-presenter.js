@@ -55,9 +55,9 @@ export default class FilmPresenter {
     this.#filmDetailsComponent = new FilmDetailsView(this.#film);
 
     this.#filmCardComponent.setClickHandler(this.#openFilmDetails);
-    this.#filmCardComponent.setWatchlistClickHandler(this.#onWatchListClick);
-    this.#filmCardComponent.setAlreadyWatchedClickHandler(this.#onAlreadyWatchedClick);
-    this.#filmCardComponent.setFavoriteClickHandler(this.#onFavoriteClick);
+    this.#filmCardComponent.setWatchlistClickHandler(this.#watchListClickHandler);
+    this.#filmCardComponent.setAlreadyWatchedClickHandler(this.#alreadyWatchedClickHandler);
+    this.#filmCardComponent.setFavoriteClickHandler(this.#favoriteClickHandler);
 
     if (prevFilmCardComponent === null) {
       render(this.#filmCardComponent, this.#filmContainerElement);
@@ -79,12 +79,12 @@ export default class FilmPresenter {
 
   #initDetailsHandlers = () => {
     this.#filmDetailsComponent.setCloseClickHandler(this.#closeFilmDetails);
-    this.#filmDetailsComponent.setWatchlistClickHandler(this.#onWatchListClick);
-    this.#filmDetailsComponent.setAlreadyWatchedClickHandler(this.#onAlreadyWatchedClick);
-    this.#filmDetailsComponent.setFavoriteClickHandler(this.#onFavoriteClick);
+    this.#filmDetailsComponent.setWatchlistClickHandler(this.#watchListClickHandler);
+    this.#filmDetailsComponent.setAlreadyWatchedClickHandler(this.#alreadyWatchedClickHandler);
+    this.#filmDetailsComponent.setFavoriteClickHandler(this.#favoriteClickHandler);
 
-    this.#filmDetailsComponent.setAddCommentHandler(this.#handleAddComment);
-    this.#filmDetailsComponent.setDeleteCommentHandler(this.#handleDeleteComment);
+    this.#filmDetailsComponent.setAddCommentHandler(this.#addCommentHandler);
+    this.#filmDetailsComponent.setDeleteCommentHandler(this.#deleteCommentHandler);
   };
 
   #openFilmDetails = async () => {
@@ -99,7 +99,7 @@ export default class FilmPresenter {
 
     this.#initDetailsHandlers();
     document.body.classList.add('hide-overflow');
-    document.addEventListener('keydown', this.#onEscKeyDown);
+    document.addEventListener('keydown', this.#escKeyDownHandler);
   };
 
   #closeFilmDetails = () => {
@@ -109,10 +109,10 @@ export default class FilmPresenter {
     this.#mode = Mode.CLOSED;
 
     document.body.classList.remove('hide-overflow');
-    document.removeEventListener('keydown', this.#onEscKeyDown);
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
-  #onEscKeyDown = (evt) => {
+  #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
       this.#closeFilmDetails();
@@ -125,28 +125,28 @@ export default class FilmPresenter {
     }
   };
 
-  #onWatchListClick = () => {
+  #watchListClickHandler = () => {
     this.#changeDataCallback(
       UserAction.FILM_UPDATE,
       UpdateType.MINOR,
       { ...this.#film, userDetails: { ...this.#film.userDetails, watchlist: !this.#film.userDetails.watchlist } });
   };
 
-  #onAlreadyWatchedClick = () => {
+  #alreadyWatchedClickHandler = () => {
     this.#changeDataCallback(
       UserAction.FILM_UPDATE,
       UpdateType.MINOR,
       { ...this.#film, userDetails: { ...this.#film.userDetails, alreadyWatched: !this.#film.userDetails.alreadyWatched } });
   };
 
-  #onFavoriteClick = () => {
+  #favoriteClickHandler = () => {
     this.#changeDataCallback(
       UserAction.FILM_UPDATE,
       UpdateType.MINOR,
       { ...this.#film, userDetails: { ...this.#film.userDetails, favorite: !this.#film.userDetails.favorite } });
   };
 
-  #handleAddComment = async (film, newComment) => {
+  #addCommentHandler = async (film, newComment) => {
     this.#uiBlocker.block();
     this.setSaving();
     try {
@@ -158,7 +158,7 @@ export default class FilmPresenter {
     this.#uiBlocker.unblock();
   };
 
-  #handleDeleteComment = async (update) => {
+  #deleteCommentHandler = async (update) => {
     this.#uiBlocker.block();
     this.setDeleting(update);
     try {
