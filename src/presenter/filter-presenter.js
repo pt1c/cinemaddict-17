@@ -1,7 +1,7 @@
 import FilterView from '../view/filter-view.js';
 import { render, remove, replace } from '../framework/render.js';
 import { filter } from '../utils/filters.js';
-import { FILTER_TYPES, FILTER_NAMES, UPDATE_TYPE } from '../const.js';
+import { FilterType, FilterName, UpdateType } from '../const.js';
 
 export default class FilterPresenter {
   #filterContainer = null;
@@ -24,24 +24,24 @@ export default class FilterPresenter {
 
     return [
       {
-        type: FILTER_TYPES.ALL,
-        name: FILTER_NAMES[FILTER_TYPES.ALL],
-        count: filter[FILTER_TYPES.ALL](films).length,
+        type: FilterType.ALL,
+        name: FilterName[FilterType.ALL],
+        count: filter[FilterType.ALL](films).length,
       },
       {
-        type: FILTER_TYPES.WATCHLIST,
-        name: FILTER_NAMES[FILTER_TYPES.WATCHLIST],
-        count: filter[FILTER_TYPES.WATCHLIST](films).length,
+        type: FilterType.WATCHLIST,
+        name: FilterName[FilterType.WATCHLIST],
+        count: filter[FilterType.WATCHLIST](films).length,
       },
       {
-        type: FILTER_TYPES.HISTORY,
-        name: FILTER_NAMES[FILTER_TYPES.HISTORY],
-        count: filter[FILTER_TYPES.HISTORY](films).length,
+        type: FilterType.HISTORY,
+        name: FilterName[FilterType.HISTORY],
+        count: filter[FilterType.HISTORY](films).length,
       },
       {
-        type: FILTER_TYPES.FAVORITES,
-        name: FILTER_NAMES[FILTER_TYPES.FAVORITES],
-        count: filter[FILTER_TYPES.FAVORITES](films).length,
+        type: FilterType.FAVORITES,
+        name: FilterName[FilterType.FAVORITES],
+        count: filter[FilterType.FAVORITES](films).length,
       },
     ];
   }
@@ -70,6 +70,6 @@ export default class FilterPresenter {
       return;
     }
 
-    this.#filterModel.setFilter(UPDATE_TYPE.MAJOR, filterType);
+    this.#filterModel.setFilter(UpdateType.MAJOR, filterType);
   };
 }

@@ -9,7 +9,7 @@ import LoadingView from '../view/loading-view.js';
 import { render, remove } from '../framework/render.js';
 import FilmPresenter from './film-presenter.js';
 import { sortFilmsByRating, sortFilmsByDate } from '../utils/films.js';
-import { FILTER_TYPES, SORT_TYPES, USER_ACTION, UPDATE_TYPE } from '../const.js';
+import { FilterType, SortType, UserAction, UpdateType } from '../const.js';
 import { filter } from '../utils/filters.js';
 
 export default class FilmsPresenter {
@@ -29,8 +29,8 @@ export default class FilmsPresenter {
 
   #presenterWithOpenedDetails = null;
 
-  #currentSortType = SORT_TYPES.DEFAULT;
-  #filterType = FILTER_TYPES.ALL;
+  #currentSortType = SortType.DEFAULT;
+  #filterType = FilterType.ALL;
   #isLoading = true;
 
   constructor(mainContainer, filmModel, filterModel) {
@@ -47,9 +47,9 @@ export default class FilmsPresenter {
     const filteredFilms = filter[this.#filterType](this.#filmModel.films);
 
     switch (this.#currentSortType) {
-      case SORT_TYPES.RATING:
+      case SortType.RATING:
         return filteredFilms.sort(sortFilmsByRating);
-      case SORT_TYPES.DATE:
+      case SortType.DATE:
         return filteredFilms.sort(sortFilmsByDate);
     }
 
@@ -145,7 +145,7 @@ export default class FilmsPresenter {
     }
 
     if (resetSortType) {
-      this.#currentSortType = SORT_TYPES.DEFAULT;
+      this.#currentSortType = SortType.DEFAULT;
     }
   };
 
@@ -173,13 +173,13 @@ export default class FilmsPresenter {
 
   #handleViewAction = (actionType, updateType, update) => {
     switch (actionType) {
-      case USER_ACTION.FILM_UPDATE:
+      case UserAction.FILM_UPDATE:
         this.#filmModel.updateFilm(updateType, update);
         break;
-      case USER_ACTION.COMMENT_ADD:
+      case UserAction.COMMENT_ADD:
         this.#filmModel.updateFilm(updateType, update);
         break;
-      case USER_ACTION.COMMENT_DELETE:
+      case UserAction.COMMENT_DELETE:
         this.#filmModel.updateFilm(updateType, update);
         break;
     }
@@ -187,18 +187,18 @@ export default class FilmsPresenter {
 
   #handleModelEvent = (updateType, data) => {
     switch (updateType) {
-      case UPDATE_TYPE.PATCH:
+      case UpdateType.PATCH:
         this.#filmPresenter.get(data.id).init(data);
         break;
-      case UPDATE_TYPE.MINOR:
+      case UpdateType.MINOR:
         this.#clearFilmsBoard();
         this.#renderFilmsBoard();
         break;
-      case UPDATE_TYPE.MAJOR:
+      case UpdateType.MAJOR:
         this.#clearFilmsBoard({ resetRenderedFilmCount: true, resetSortType: true });
         this.#renderFilmsBoard();
         break;
-      case UPDATE_TYPE.INIT:
+      case UpdateType.INIT:
         this.#isLoading = false;
         remove(this.#loadingComponent);
         this.#renderFilmsBoard();

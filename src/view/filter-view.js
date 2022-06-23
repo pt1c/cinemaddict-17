@@ -1,4 +1,4 @@
-import { FILTER_TYPES } from '../const.js';
+import { FilterType } from '../const.js';
 import AbstractView from '../framework/view/abstract-view.js';
 
 export default class FilterView extends AbstractView {
@@ -25,7 +25,7 @@ export default class FilterView extends AbstractView {
     const activeClass = (this.#active === filter.type) ? ' main-navigation__item--active' : '';
     const filmCount = (filter.count) ? ` <span class="main-navigation__item-count">${filter.count}</span>` : '';
     return `<a href="#${filter.type}" class="main-navigation__item${activeClass}" data-filter="${filter.type}">${filter.name}
-    ${filter.type === FILTER_TYPES.ALL ? '' : filmCount}</a>`;
+    ${filter.type === FilterType.ALL ? '' : filmCount}</a>`;
   };
 
   setFilterTypeChangeHandler = (callback) => {

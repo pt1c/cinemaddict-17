@@ -1,4 +1,4 @@
-import { FILTER_TYPES, UPDATE_TYPE } from '../const.js';
+import { FilterType, UpdateType } from '../const.js';
 import Observable from '../framework/observable.js';
 
 export default class FilmModel extends Observable {
@@ -18,7 +18,7 @@ export default class FilmModel extends Observable {
       this.#films = [];
     }
 
-    this._notify(UPDATE_TYPE.INIT);
+    this._notify(UpdateType.INIT);
   };
 
   get films() {
@@ -31,28 +31,14 @@ export default class FilmModel extends Observable {
 
   get filtered() {
     return ({
-      [FILTER_TYPES.ALL]: () => this.#films,
-      [FILTER_TYPES.WATCHLIST]: () => this.#films.filter((film) => film.userDetails.watchlist),
-      [FILTER_TYPES.HISTORY]: () => this.#films.filter((film) => film.userDetails.alreadyWatched),
-      [FILTER_TYPES.FAVORITES]: () => this.#films.filter((film) => film.userDetails.favorite),
+      [FilterType.ALL]: () => this.#films,
+      [FilterType.WATCHLIST]: () => this.#films.filter((film) => film.userDetails.watchlist),
+      [FilterType.HISTORY]: () => this.#films.filter((film) => film.userDetails.alreadyWatched),
+      [FilterType.FAVORITES]: () => this.#films.filter((film) => film.userDetails.favorite),
     });
   }
 
   updateFilm = async (updateType, update) => {
-    // const index = this.#films.findIndex((film) => film.id === update.id);
-
-    // if (index === -1) {
-    //   throw new Error('Can\'t update unexisting film');
-    // }
-
-    // this.#films = [
-    //   ...this.#films.slice(0, index),
-    //   update,
-    //   ...this.#films.slice(index + 1),
-    // ];
-
-    // this._notify(updateType, update);
-
     const index = this.#films.findIndex((film) => film.id === update.id);
 
     if (index === -1) {

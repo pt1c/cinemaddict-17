@@ -1,4 +1,4 @@
-import { USER_ACTION, UPDATE_TYPE, END_POINT, AUTHORIZATION, TIME_LIMIT } from '../const.js';
+import { UserAction, UpdateType, END_POINT, AUTHORIZATION, TimeLimit } from '../const.js';
 import { render, replace, remove } from '../framework/render.js';
 import FilmCardView from '../view/film-card-view.js';
 import FilmDetailsView from '../view/film-details-view.js';
@@ -26,7 +26,7 @@ export default class FilmPresenter {
 
   #commentModel = null;
 
-  #uiBlocker = new UiBlocker(TIME_LIMIT.LOWER_LIMIT, TIME_LIMIT.UPPER_LIMIT);
+  #uiBlocker = new UiBlocker(TimeLimit.LOWER_LIMIT, TimeLimit.UPPER_LIMIT);
 
   constructor(filmContainerElement, changeDataCallback, changeModeCallback) {
     this.#filmContainerElement = filmContainerElement;
@@ -35,6 +35,14 @@ export default class FilmPresenter {
 
     this.#commentModel = new CommentModel(new CommentsApiService(END_POINT, AUTHORIZATION));
     this.#commentModel.addObserver(this.#handleCommentModelChange);
+  }
+
+  get isDetailsOpen() {
+    return this.#mode === Mode.OPENED;
+  }
+
+  get filmId() {
+    return this.#film.id;
   }
 
   init = (film) => {
@@ -68,14 +76,6 @@ export default class FilmPresenter {
     remove(prevFilmCardComponent);
     remove(prevFilmDetailsComponent);
   };
-
-  get isDetailsOpen() {
-    return this.#mode === Mode.OPENED;
-  }
-
-  get filmId() {
-    return this.#film.id;
-  }
 
   #initDetailsHandlers = () => {
     this.#filmDetailsComponent.setCloseClickHandler(this.#closeFilmDetails);
@@ -127,22 +127,22 @@ export default class FilmPresenter {
 
   #onWatchListClick = () => {
     this.#changeDataCallback(
-      USER_ACTION.FILM_UPDATE,
-      UPDATE_TYPE.MINOR,
+      UserAction.FILM_UPDATE,
+      UpdateType.MINOR,
       { ...this.#film, userDetails: { ...this.#film.userDetails, watchlist: !this.#film.userDetails.watchlist } });
   };
 
   #onAlreadyWatchedClick = () => {
     this.#changeDataCallback(
-      USER_ACTION.FILM_UPDATE,
-      UPDATE_TYPE.MINOR,
+      UserAction.FILM_UPDATE,
+      UpdateType.MINOR,
       { ...this.#film, userDetails: { ...this.#film.userDetails, alreadyWatched: !this.#film.userDetails.alreadyWatched } });
   };
 
   #onFavoriteClick = () => {
     this.#changeDataCallback(
-      USER_ACTION.FILM_UPDATE,
-      UPDATE_TYPE.MINOR,
+      UserAction.FILM_UPDATE,
+      UpdateType.MINOR,
       { ...this.#film, userDetails: { ...this.#film.userDetails, favorite: !this.#film.userDetails.favorite } });
   };
 
@@ -209,17 +209,17 @@ export default class FilmPresenter {
 
   #handleCommentModelChange = (updateType) => {
     switch (updateType) {
-      case USER_ACTION.COMMENT_ADD:
+      case UserAction.COMMENT_ADD:
         this.#changeDataCallback(
-          USER_ACTION.COMMENT_ADD,
-          UPDATE_TYPE.MINOR,
+          UserAction.COMMENT_ADD,
+          UpdateType.MINOR,
           this.#film
         );
         break;
-      case USER_ACTION.COMMENT_DELETE:
+      case UserAction.COMMENT_DELETE:
         this.#changeDataCallback(
-          USER_ACTION.COMMENT_DELETE,
-          UPDATE_TYPE.MINOR,
+          UserAction.COMMENT_DELETE,
+          UpdateType.MINOR,
           this.#film
         );
         break;

@@ -1,8 +1,6 @@
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import he from 'he';
-dayjs.extend(relativeTime);
-
 import AbstractView from '../framework/view/abstract-view.js';
 
 const filmDetailsCommentTemplate = (comment, deletingCommentId) => {
@@ -30,6 +28,8 @@ const filmDetailsCommentTemplate = (comment, deletingCommentId) => {
         </li>`
   );
 };
+
+dayjs.extend(relativeTime);
 
 export default class FilmDetailsCommentView extends AbstractView {
   constructor(comment, deletingCommentId) {

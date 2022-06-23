@@ -1,4 +1,4 @@
-import { UPDATE_TYPE, USER_ACTION } from '../const.js';
+import { UpdateType, UserAction } from '../const.js';
 import Observable from '../framework/observable.js';
 
 export default class CommentModel extends Observable {
@@ -24,7 +24,7 @@ export default class CommentModel extends Observable {
       this.#comments = [];
     }
 
-    this._notify(UPDATE_TYPE.INIT);
+    this._notify(UpdateType.INIT);
   };
 
   addComment = async (newComment, filmId) => {
@@ -32,7 +32,7 @@ export default class CommentModel extends Observable {
       const response = await this.#commentsApiService.addComment(newComment, filmId);
       this.#comments = response.comments;
 
-      this._notify(USER_ACTION.COMMENT_ADD);
+      this._notify(UserAction.COMMENT_ADD);
     } catch (err) {
       throw new Error('Can\'t add comment');
     }
@@ -53,7 +53,7 @@ export default class CommentModel extends Observable {
         ...this.#comments.slice(index + 1),
       ];
 
-      this._notify(USER_ACTION.COMMENT_DELETE);
+      this._notify(UserAction.COMMENT_DELETE);
     } catch (err) {
       throw new Error('Can\'t delete comment');
     }
