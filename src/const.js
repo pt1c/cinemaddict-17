@@ -28,10 +28,10 @@ const UserAction = {
   FILM_UPDATE: 'FILM_UPDATE',
   COMMENT_ADD: 'COMMENT_ADD',
   COMMENT_DELETE: 'COMMENT_DELETE',
-  INIT: 'INIT',
 };
 
 const UpdateType = {
+  INIT: 'INIT',
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
