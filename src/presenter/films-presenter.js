@@ -83,11 +83,11 @@ export default class FilmsPresenter {
     render(this.#filmContainerComponent, this.#filmListComponent.element);
 
     const filmsCount = this.films.length;
-    const films = this.films.slice(0, Math.min(filmsCount, this.#renderedFilmsCount));
+    const films = this.films.slice(0, Math.min(filmsCount, FILMS_PER_PAGE));
 
     this.#renderFilms(films);
 
-    if (filmsCount > this.#renderedFilmsCount) {
+    if (filmsCount > FILMS_PER_PAGE) {
       this.#renderShowMoreButton();
     }
   };
@@ -117,7 +117,7 @@ export default class FilmsPresenter {
     }
   };
 
-  #clearFilmsBoard = ({ resetRenderedFilmCount = false, resetSortType = false } = {}) => {
+  #clearFilmsBoard = ({ resetSortType = false } = {}) => {
     const filmsCount = this.films.length;
 
     this.#filmPresenter.forEach((presenter) => {
@@ -138,11 +138,7 @@ export default class FilmsPresenter {
     remove(this.#showMoreButtonComponent);
     remove(this.#loadingComponent);
 
-    if (resetRenderedFilmCount) {
-      this.#renderedFilmsCount = FILMS_PER_PAGE;
-    } else {
-      this.#renderedFilmsCount = Math.min(filmsCount, this.#renderedFilmsCount);
-    }
+    this.#renderedFilmsCount = Math.min(filmsCount, FILMS_PER_PAGE);
 
     if (resetSortType) {
       this.#currentSortType = SortType.DEFAULT;
@@ -195,7 +191,7 @@ export default class FilmsPresenter {
         this.#renderFilmsBoard();
         break;
       case UpdateType.MAJOR:
-        this.#clearFilmsBoard({ resetRenderedFilmCount: true, resetSortType: true });
+        this.#clearFilmsBoard({ resetSortType: true });
         this.#renderFilmsBoard();
         break;
       case UpdateType.INIT:
@@ -232,7 +228,7 @@ export default class FilmsPresenter {
     }
 
     this.#currentSortType = sortType;
-    this.#clearFilmsBoard({ resetRenderedTaskCount: true });
+    this.#clearFilmsBoard();
     this.#renderFilmsBoard();
   };
 }
