@@ -282,6 +282,9 @@ export default class FilmDetailsView extends AbstractStatefulView {
     );
   };
 
+  removeAllHandlers = () => {
+    document.removeEventListener('keydown', this.#addCommentHandler);
+  };
 
   static parseFilmToState = (film) => (
     {

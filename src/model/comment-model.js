@@ -1,4 +1,4 @@
-import { UpdateType, UserAction } from '../const.js';
+import { UserAction } from '../const.js';
 import Observable from '../framework/observable.js';
 
 export default class CommentModel extends Observable {
@@ -23,8 +23,6 @@ export default class CommentModel extends Observable {
     } catch (err) {
       this.#comments = [];
     }
-
-    this._notify(UpdateType.INIT);
   };
 
   addComment = async (newComment, filmId) => {
