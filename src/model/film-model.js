@@ -1,4 +1,4 @@
-import { FilterType, UpdateType } from '../const.js';
+import { UpdateType } from '../const.js';
 import Observable from '../framework/observable.js';
 
 export default class FilmModel extends Observable {
@@ -8,6 +8,14 @@ export default class FilmModel extends Observable {
   constructor(filmsApiService) {
     super();
     this.#filmsApiService = filmsApiService;
+  }
+
+  get films() {
+    return this.#films;
+  }
+
+  get count() {
+    return this.#films.length;
   }
 
   init = async () => {
@@ -20,23 +28,6 @@ export default class FilmModel extends Observable {
 
     this._notify(UpdateType.INIT);
   };
-
-  get films() {
-    return this.#films;
-  }
-
-  get count() {
-    return this.#films.length;
-  }
-
-  get filtered() {
-    return ({
-      [FilterType.ALL]: () => this.#films,
-      [FilterType.WATCHLIST]: () => this.#films.filter((film) => film.userDetails.watchlist),
-      [FilterType.HISTORY]: () => this.#films.filter((film) => film.userDetails.alreadyWatched),
-      [FilterType.FAVORITES]: () => this.#films.filter((film) => film.userDetails.favorite),
-    });
-  }
 
   updateFilm = async (updateType, update) => {
     const index = this.#films.findIndex((film) => film.id === update.id);

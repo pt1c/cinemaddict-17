@@ -3,7 +3,7 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { humanizeRuntime, humanizeReleaseDate } from '../utils/common.js';
 import FilmDetailsCommentView from './film-details-comment-view.js';
 
-const filmDetailsTemplate = (film) => {
+const createfilmDetailsTemplate = (film) => {
   const { filmInfo, userDetails } = film;
 
   const { title, alternativeTitle, totalRating, poster, director, genre, description, release } = filmInfo;
@@ -28,8 +28,8 @@ const filmDetailsTemplate = (film) => {
     commentsItems += new FilmDetailsCommentView(comment, film?.deletingCommentId).template;
   });
 
-  const smileShow = () => (film.smileName) ? `<img src="./images/emoji/${film.smileName}.png" width="55" height="55" alt="emoji-${film.smileName}">` : '';
-  const smileChecked = (smileName) => smileName === film.smileName ? 'checked' : '';
+  const showSmile = () => (film.smileName) ? `<img src="./images/emoji/${film.smileName}.png" width="55" height="55" alt="emoji-${film.smileName}">` : '';
+  const isSmileChecked = (smileName) => smileName === film.smileName ? 'checked' : '';
 
   return (
     `<section class="film-details">
@@ -111,29 +111,29 @@ const filmDetailsTemplate = (film) => {
           </ul>
 
           <div class="film-details__new-comment">
-            <div class="film-details__add-emoji-label">${smileShow()}</div>
+            <div class="film-details__add-emoji-label">${showSmile()}</div>
 
             <label class="film-details__comment-label">
               <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
             </label>
 
             <div class="film-details__emoji-list">
-              <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="smile" ${smileChecked('smile')}>
+              <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="smile" ${isSmileChecked('smile')}>
               <label class="film-details__emoji-label" for="emoji-smile">
                 <img src="./images/emoji/smile.png" width="30" height="30" alt="emoji">
               </label>
 
-              <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-sleeping" value="sleeping" ${smileChecked('sleeping')}>
+              <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-sleeping" value="sleeping" ${isSmileChecked('sleeping')}>
               <label class="film-details__emoji-label" for="emoji-sleeping">
                 <img src="./images/emoji/sleeping.png" width="30" height="30" alt="emoji">
               </label>
 
-              <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-puke" value="puke" ${smileChecked('puke')}>
+              <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-puke" value="puke" ${isSmileChecked('puke')}>
               <label class="film-details__emoji-label" for="emoji-puke">
                 <img src="./images/emoji/puke.png" width="30" height="30" alt="emoji">
               </label>
 
-              <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-angry" value="angry" ${smileChecked('angry')}>
+              <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-angry" value="angry" ${isSmileChecked('angry')}>
               <label class="film-details__emoji-label" for="emoji-angry">
                 <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
               </label>
@@ -155,7 +155,7 @@ export default class FilmDetailsView extends AbstractStatefulView {
   }
 
   get template() {
-    return filmDetailsTemplate(this._state);
+    return createfilmDetailsTemplate(this._state);
   }
 
   setCloseClickHandler = (callback) => {
@@ -225,7 +225,7 @@ export default class FilmDetailsView extends AbstractStatefulView {
     const scrollPosition = this.element.scrollTop;
     if (evt.ctrlKey && evt.key === 'Enter') {
       evt.preventDefault();
-      this._callback.addComment(FilmDetailsView.parseStateToFilm(this._state), FilmDetailsView.newComment(this._state));
+      this._callback.addComment(FilmDetailsView.parseStateToFilm(this._state), FilmDetailsView.setNewComment(this._state));
     }
     this.element.scrollTop = scrollPosition;
   };
@@ -306,7 +306,7 @@ export default class FilmDetailsView extends AbstractStatefulView {
     return film;
   };
 
-  static newComment = (state) => ({
+  static setNewComment = (state) => ({
     emotion: state.smileName || 'smile',
     comment: state.newComment,
   });

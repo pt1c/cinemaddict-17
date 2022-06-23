@@ -3,7 +3,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import he from 'he';
 import AbstractView from '../framework/view/abstract-view.js';
 
-const filmDetailsCommentTemplate = (comment, deletingCommentId) => {
+const createfilmDetailsCommentTemplate = (comment, deletingCommentId) => {
   const { author, emotion, date, id, isDisabled } = comment;
 
   const getEmoctionPicture = (`./images/emoji/${emotion}.png`);
@@ -39,6 +39,6 @@ export default class FilmDetailsCommentView extends AbstractView {
   }
 
   get template() {
-    return filmDetailsCommentTemplate(this.comment, this.deletingCommentId);
+    return createfilmDetailsCommentTemplate(this.comment, this.deletingCommentId);
   }
 }

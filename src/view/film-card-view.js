@@ -3,7 +3,7 @@ import AbstractView from '../framework/view/abstract-view.js';
 import { humanizeRuntime, chopString } from '../utils/common.js';
 import dayjs from 'dayjs';
 
-const filmCardTemplate = (film) => {
+const createFilmCardTemplate = (film) => {
   const { filmInfo, commentsIds, userDetails } = film;
 
   const { title, totalRating, poster, runtime, genre, description, release } = filmInfo;
@@ -49,7 +49,7 @@ export default class FilmCardView extends AbstractView {
   }
 
   get template() {
-    return filmCardTemplate(this.film);
+    return createFilmCardTemplate(this.film);
   }
 
   setClickHandler = (callback) => {

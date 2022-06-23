@@ -1,6 +1,6 @@
-export const getRank = (movies) => {
-  const watched = movies.filter((item) => item.userDetails.alreadyWatched);
-  const watchedCount = watched.length;
+export const getRank = (films) => {
+  const watchedFilms = films.filter((item) => item.userDetails.alreadyWatched);
+  const watchedCount = watchedFilms.length;
 
   const Rank = {
     NONE: '',
