@@ -26,7 +26,8 @@ export default class FilmPresenter {
 
   #commentModel = null;
 
-  #uiBlocker = new UiBlocker(TimeLimit.LOWER_LIMIT, TimeLimit.UPPER_LIMIT);
+  //#uiBlocker = new UiBlocker(TimeLimit.LOWER_LIMIT, TimeLimit.UPPER_LIMIT);
+  #uiBlocker = UiBlocker.instantiate(TimeLimit.LOWER_LIMIT, TimeLimit.UPPER_LIMIT);
 
   constructor(filmContainerElement, changeDataCallback, changeModeCallback) {
     this.#filmContainerElement = filmContainerElement;
@@ -195,6 +196,7 @@ export default class FilmPresenter {
     const resetFormState = () => {
       this.#filmDetailsComponent.updateElement({
         isDisabled: false,
+        deletingCommentId: null,
         isDeleting: false,
         isSaving: false,
       });

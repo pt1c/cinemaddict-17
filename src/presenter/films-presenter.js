@@ -6,10 +6,11 @@ import FilmContainerView from '../view/film-container-view.js';
 import SortView from '../view/sort-view.js';
 import ShowMoreButtonView from '../view/show-more-button-view';
 import LoadingView from '../view/loading-view.js';
+import FilmsExtraContainerView from '../view/films-extra-container-view.js';
 import { render, remove } from '../framework/render.js';
 import FilmPresenter from './film-presenter.js';
-import { sortFilmsByRating, sortFilmsByDate } from '../utils/films.js';
-import { FilterType, SortType, UserAction, UpdateType } from '../const.js';
+import { sortFilmsByRating, sortFilmsByDate, getTopRatedFilms, getMostCommentedFilms } from '../utils/films.js';
+import { FilterType, SortType, UserAction, UpdateType, FilmsExtraSectionText } from '../const.js';
 import { filter } from '../utils/filters.js';
 
 export default class FilmsPresenter {
@@ -32,6 +33,8 @@ export default class FilmsPresenter {
   #currentSortType = SortType.DEFAULT;
   #filterType = FilterType.ALL;
   #isLoading = true;
+
+  #filmsExtraContainerComponents = new Map();
 
   constructor(mainContainer, filmModel, filterModel) {
     this.#mainContainer = mainContainer;
@@ -76,6 +79,9 @@ export default class FilmsPresenter {
     this.#renderFilmsList();
 
     this.#updateDetailedFilm();
+
+    this.#clearExtraFilms();
+    this.#renderExtraFilms();
   };
 
   #renderFilmsList = () => {
@@ -96,8 +102,8 @@ export default class FilmsPresenter {
     films.forEach((film) => this.#renderFilm(film));
   };
 
-  #renderFilm = (film) => {
-    const filmPresenter = new FilmPresenter(this.#filmContainerComponent.element, this.#handleViewAction, this.#handleModeChange);
+  #renderFilm = (film, element = this.#filmContainerComponent.element) => {
+    const filmPresenter = new FilmPresenter(element, this.#handleViewAction, this.#handleModeChange);
     filmPresenter.init(film);
     this.#filmPresenter.set(film.id, filmPresenter);
   };
@@ -230,5 +236,31 @@ export default class FilmsPresenter {
     this.#currentSortType = sortType;
     this.#clearFilmsBoard();
     this.#renderFilmsBoard();
+  };
+
+  #renderExtraFilms = () => {
+    const extraFilms = {
+      TOP_RATED: getTopRatedFilms(this.films),
+      MOST_COMMENTED: getMostCommentedFilms(this.films)
+    };
+
+    Object.entries(extraFilms).forEach(([key, value]) => {
+      if (!value.length) {
+        return;
+      }
+
+      const filmExtraContainerComponent = new FilmsExtraContainerView(FilmsExtraSectionText[key]);
+      this.#filmsExtraContainerComponents.set(FilmsExtraSectionText[key], filmExtraContainerComponent);
+
+      render(filmExtraContainerComponent, this.#filmBoardComponent.element);
+      value.forEach((film) => {
+        this.#renderFilm(film, filmExtraContainerComponent.contentWrapper);
+      });
+    });
+  };
+
+  #clearExtraFilms = () => {
+    this.#filmsExtraContainerComponents.forEach(remove);
+    this.#filmsExtraContainerComponents.clear();
   };
 }

@@ -49,6 +49,11 @@ const TimeLimit = {
   UPPER_LIMIT: 1000,
 };
 
+const FilmsExtraSectionText = {
+  TOP_RATED: 'Top rated',
+  MOST_COMMENTED: 'Most commented'
+};
+
 export {
   MAX_DESCRIPTION_LENGTH,
   FILMS_PER_PAGE,
@@ -60,5 +65,6 @@ export {
   UserAction,
   UpdateType,
   Method,
-  TimeLimit
+  TimeLimit,
+  FilmsExtraSectionText
 };
