@@ -22,6 +22,8 @@ export default class UiBlocker {
   /** @type {number} Идентификатор таймера */
   #timerId;
 
+  static #instance = null;
+
   /**
    * @param {Object} config Объект с настройками блокировщика
    * @param {number} config.lowerLimit Время до блокировки интерфейса в миллисекундах. Если вызвать метод unblock раньше, то интерфейс заблокирован не будет
@@ -35,6 +37,13 @@ export default class UiBlocker {
     this.#element.classList.add('ui-blocker');
     document.body.append(this.#element);
   }
+
+  static instantiate = (lowerLimit, upperLimit) => {
+    if (!this.#instance) {
+      this.#instance = new UiBlocker(lowerLimit, upperLimit);
+    }
+    return this.#instance;
+  };
 
   /** Метод для блокировки интерфейса */
   block = () => {
