@@ -26,7 +26,6 @@ export default class FilmPresenter {
 
   #commentModel = null;
 
-  //#uiBlocker = new UiBlocker(TimeLimit.LOWER_LIMIT, TimeLimit.UPPER_LIMIT);
   #uiBlocker = UiBlocker.instantiate(TimeLimit.LOWER_LIMIT, TimeLimit.UPPER_LIMIT);
 
   constructor(filmContainerElement, changeDataCallback, changeModeCallback) {
@@ -151,12 +150,15 @@ export default class FilmPresenter {
 
   #addCommentHandler = async (film, newComment) => {
     this.#uiBlocker.block();
-    this.setSaving();
-    try {
-      await this.#commentModel.addComment(newComment, film.id);
-    } catch (err) {
-      this.setAborting();
-      this.setAbortingAddComment();
+    if (this.#filmDetailsComponent.isFormCorrect()) {
+      this.setSaving();
+      try {
+        await this.#commentModel.addComment(newComment, film.id);
+      } catch (err) {
+        this.setAborting();
+        this.setAbortingAddComment();
+        this.#filmDetailsComponent.shakeForm();
+      }
     }
     this.#uiBlocker.unblock();
   };
@@ -193,16 +195,12 @@ export default class FilmPresenter {
       return;
     }
 
-    const resetFormState = () => {
-      this.#filmDetailsComponent.updateElement({
-        isDisabled: false,
-        deletingCommentId: null,
-        isDeleting: false,
-        isSaving: false,
-      });
-    };
-
-    this.#filmDetailsComponent.shake(resetFormState);
+    this.#filmDetailsComponent.updateElement({
+      isDisabled: false,
+      deletingCommentId: null,
+      isDeleting: false,
+      isSaving: false,
+    });
   };
 
   setAbortingAddComment = () => {

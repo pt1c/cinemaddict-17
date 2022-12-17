@@ -218,7 +218,7 @@ export default class FilmDetailsView extends AbstractStatefulView {
 
   setAddCommentHandler = (callback) => {
     this._callback.addComment = callback;
-    document.addEventListener('keydown', this.#addCommentHandler);
+    this.element.addEventListener('keydown', this.#addCommentHandler);
   };
 
   #addCommentHandler = (evt) => {
@@ -283,8 +283,22 @@ export default class FilmDetailsView extends AbstractStatefulView {
   };
 
   removeAllHandlers = () => {
-    document.removeEventListener('keydown', this.#addCommentHandler);
+    this.elemet.removeEventListener('keydown', this.#addCommentHandler);
   };
+
+  isFormCorrect() {
+    if (this.element.querySelector('.film-details__comment-input').value) {
+      return true;
+    }
+    this.shakeForm();
+    return false;
+  }
+
+  shakeForm() {
+    const element = this.element.querySelector('.film-details__new-comment');
+    element.classList.add('shake');
+    setTimeout(() => { element.classList.remove('shake'); }, 600);
+  }
 
   static parseFilmToState = (film) => (
     {
